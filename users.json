@@ -1,0 +1,10 @@
+{
+  "Admin": {
+    "password": "Admin1",
+    "role": "ADMIN"
+  },
+  "Chercheur": {
+    "password": "Chercheur1",
+    "role": "RESEARCHER"
+  }
+}

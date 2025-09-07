@@ -1,0 +1,69 @@
+// Ignore files and directories for Docker builds
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/*.egg-info/
+**/.venv/
+**/venv/
+**/train.log
+**/train_fullgrid.log
+**/*.ipynb_checkpoints
+**/*.log
+**/.git
+**/.gitignore
+**/.z.excalidraw
+**/.cache/
+**/dist/
+**/build/
+**/.DS_Store
+**/Thumbs.db
+**/.env
+**/*.ipynb
+**/predictions_resultats_rf.csv
+
+
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# data heavy / outputs
+train.log
+train_fullgrid.log
+*.ipynb_checkpoints
+*.log
+
+# local, vcs
+.git
+.gitignore
+.z.excalidraw
+
+# caches
+.cache/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.venv/
+.env
+.git/
+.gitignore
+*.ipynb
+*.DS_Store
+train*.log
+predictions_resultats_rf.csv
+z.excalidraw

@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pandemies_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Admin}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    depends_on:
+      - db
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: ${POSTGRES_DB:-pandemies_db}
+      PGUSER: ${POSTGRES_USER:-postgres}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-Admin}
+      TZ: Europe/Paris
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app
+    depends_on:
+      - api
+    environment:
+      API_BASE_URL: http://api:8000
+      TZ: Europe/Paris
+
+  gateway:
+    image: nginx:alpine
+    depends_on:
+      - api
+      - app
+    ports:
+      - "8011:8011"   # API US
+      - "8012:8012"   # API FR
+      - "8013:8013"   # API CH
+      - "8511:8511"   # APP US
+      - "8512:8512"   # APP FR
+      - "8513:8513"   # APP CH
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+
+volumes:
+  db_data:

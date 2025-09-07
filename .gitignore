@@ -1,0 +1,37 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*     
+
+# logs, dumps, sauvegardes
+*.log
+backups/
+*.dump
+*.sql
+*.sql.gz
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# notebooks & gros artefacts optionnels
+*.ipynb
+train*.log
+
+
+
+
+# # ML artifacts
+# prediction/artifacts/
+
+# # ML artifacts (non versionnés)
+# prediction/artifacts/
+
+# # ML artifacts (non versionnés)
+# prediction/artifacts/
+
+# # ML artifacts
