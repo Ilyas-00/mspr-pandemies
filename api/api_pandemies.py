@@ -7,6 +7,11 @@ import psycopg2.extras
 import uvicorn
 from api.ml_router import router as ml_router
 
+from pathlib import Path
+from starlette_exporter import PrometheusMiddleware, handle_metrics
+
+
+
 # =========================
 # Config API
 # =========================
@@ -15,6 +20,36 @@ app = FastAPI(
     description="API pour visualiser et prédire (taux de transmission) via IA",
     version="2.0.0",
 )
+
+# Middleware + endpoint /metrics (Prometheus)
+app.add_middleware(PrometheusMiddleware, app_name="pandemies_api")
+app.add_route("/metrics", handle_metrics)
+
+# Endpoint /health très simple
+@app.get("/health")
+def health():
+    # DB check
+    try:
+        conn = psycopg2.connect(
+            host=os.getenv("PGHOST","db"),
+            port=os.getenv("PGPORT","5432"),
+            dbname=os.getenv("PGDATABASE","pandemies_db"),
+            user=os.getenv("PGUSER","postgres"),
+            password=os.getenv("PGPASSWORD","Admin"),
+            cursor_factory=RealDictCursor,
+            connect_timeout=2
+        )
+        conn.close()
+        db_ok = True
+    except Exception:
+        db_ok = False
+
+    # Modèle ML check
+    model_ok = Path(os.getenv("MODEL_PATH","/app/prediction/artifacts/model_taux_transmission_rf.pkl")).exists()
+
+    return {"status":"ok" if (db_ok and model_ok) else "degraded",
+            "db": db_ok, "model": model_ok}
+
 # CORS (OK pour dev)
 app.add_middleware(
     CORSMiddleware,
