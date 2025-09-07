@@ -114,20 +114,21 @@ jobs:
         run: |
           curl -sS http://localhost:8011/ml/available_countries | head -c 300 || true
 
-      - name: Ping Streamlit (gateway US 8511)
+      - name: Ping Streamlit (direct app 8501)
         run: |
           for i in {1..40}; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8511/ || true)
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8501/ || true)
             if [ "$STATUS" = "200" ]; then
-              echo "APP OK"
+              echo "APP OK (8501)"
               exit 0
             fi
-            echo "waiting APP... ($i)"
+            echo "waiting APP 8501... ($i)"
             sleep 3
           done
-          echo "APP never became healthy"
+          echo "APP on 8501 never became healthy"
           docker compose logs app || true
           exit 1
+
 
       - name: Show gateway headers (nginx)
         run: curl -I http://localhost:8011/ | tr -d '\r' | sed -n '1,10p'
