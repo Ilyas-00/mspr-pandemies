@@ -21,6 +21,8 @@ services:
       PGUSER: ${POSTGRES_USER:-postgres}
       PGPASSWORD: ${POSTGRES_PASSWORD:-Admin}
       TZ: Europe/Paris
+    ports:
+      - "8000:8000"
 
   app:
     build:

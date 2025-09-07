@@ -6,6 +6,7 @@ import psycopg2
 import psycopg2.extras
 import uvicorn
 from api.ml_router import router as ml_router
+from psycopg2.extras import RealDictCursor
 
 from pathlib import Path
 from starlette_exporter import PrometheusMiddleware, handle_metrics
